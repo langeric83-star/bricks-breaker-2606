@@ -12,8 +12,8 @@ class Game
 	//Box brick;
 	std::vector<Box> bricks; 
 
-	bool playerWon;
-	bool gameOver; 
+	bool playerWon = false;
+	bool gameOver = false; 
 
 public:
 	Game();

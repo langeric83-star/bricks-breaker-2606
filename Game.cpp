@@ -18,6 +18,8 @@ void Game::Reset()
 	ball.visage = 'O';
 	ball.color = ConsoleColor::Cyan;
 	ResetBall();
+	gameOver = false;
+	playerWon = false; 
 
 	// TODO #2 - Add this brick and 4 more bricks to the vector
 	Box brick; 
@@ -84,13 +86,33 @@ void Game::Render() const
 	ball.Draw();
 
 	// TODO #3 - Update render to render all bricks
-	for (int i = 0; i < bricks.size(); i++)
+	for (int i = 0; i < bricks.size(); ++i)
 	{
 		bricks[i].Draw();
+
+	}
+	
+	if (gameOver)
+	{
+		Console::SetCursorPosition(25, 12);
+
+		if (playerWon)
+		{
+			Console::ForegroundColor(ConsoleColor::Green);
+			std::cout << "YOU WON! Press R to Reset";
+
+		}
+		else
+		{
+			Console::ForegroundColor(ConsoleColor::Red);
+			std::cout << "YOU LOST! Press R to Reset";
+		}
 	}
 	
 
 	Console::Lock(false);
+	
+
 }
 
 void Game::CheckCollision()
@@ -118,8 +140,10 @@ void Game::CheckCollision()
 	{
 		ball.x_velocity = 0;
 		ball.y_velocity = 0; 
-
-
+		
+		
+		playerWon = true; 
+		gameOver = true; 
 	}
 
 
@@ -129,4 +153,13 @@ void Game::CheckCollision()
 	}
 
 	// TODO #7 - If ball touches bottom of window, pause ball and display (render) defeat text with R to reset
+	if (ball.y_position + ball.y_velocity >= Console::WindowHeight() - 1) 
+	{
+		ball.x_velocity = 0;
+		ball.y_velocity = 0;
+
+		playerWon = false; 
+		gameOver = true; 
+
+	}
 }
